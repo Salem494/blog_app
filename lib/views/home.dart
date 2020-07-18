@@ -1,33 +1,32 @@
-import 'package:blogapp/services/crud.dart';
-import 'package:blogapp/views/create_blog.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_blog/services/crud.dart';
+import 'package:flutter_blog/views/create_blog.dart';
 
-
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
-class _HomeState extends State<Home> {
-  CrudMethod crudMethod = new CrudMethod();
 
-  Stream blogStream;
+class _HomePageState extends State<HomePage> {
+  CrudMethods crudMethods = new CrudMethods();
 
-  // ignore: non_constant_identifier_names
-  Widget BlogList() {
+  Stream blogsStream;
+
+  Widget BlogsList() {
     return Container(
-      child: blogStream != null
+      child: blogsStream != null
           ? Column(
         children: <Widget>[
           StreamBuilder(
-            stream: blogStream,
+            stream: blogsStream,
             builder: (context, snapshot) {
               return ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   itemCount: snapshot.data.documents.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return BlogTile(
+                    return BlogsTile(
                       authorName: snapshot
                           .data.documents[index].data['authorName'],
                       title: snapshot.data.documents[index].data["title"],
@@ -50,9 +49,9 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    crudMethod.getData().then((result) {
+    crudMethods.getData().then((result) {
       setState(() {
-        blogStream = result;
+        blogsStream = result;
       });
     });
     super.initState();
@@ -66,11 +65,11 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Blog",
+              "Flutter",
               style: TextStyle(fontSize: 22),
             ),
             Text(
-              "App",
+              "Blog",
               style: TextStyle(fontSize: 22, color: Colors.blue),
             )
           ],
@@ -78,7 +77,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: BlogList(),
+      body: BlogsList(),
       floatingActionButton: Container(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Row(
@@ -98,10 +97,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-// ignore: must_be_immutable
-class BlogTile extends StatelessWidget {
+class BlogsTile extends StatelessWidget {
   String imgUrl, title, description, authorName;
-  BlogTile(
+  BlogsTile(
       {@required this.imgUrl,
         @required this.title,
         @required this.description,

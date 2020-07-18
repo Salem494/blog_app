@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:blogapp/services/crud.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/services/crud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
@@ -15,8 +15,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
   File selectedImage;
   bool _isLoading = false;
-
-  CrudMethod crudMethod = new CrudMethod();
+  CrudMethods crudMethods = new CrudMethods();
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -49,7 +48,7 @@ class _CreateBlogState extends State<CreateBlog> {
         "title": title,
         "desc": desc
       };
-      crudMethod.addData(blogMap).then((result) {
+      crudMethods.addData(blogMap).then((result) {
         Navigator.pop(context);
       });
     } else {}
@@ -63,11 +62,11 @@ class _CreateBlogState extends State<CreateBlog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Blog",
+              "Flutter",
               style: TextStyle(fontSize: 22),
             ),
             Text(
-              "App",
+              "Blog",
               style: TextStyle(fontSize: 22, color: Colors.blue),
             )
           ],
@@ -159,4 +158,3 @@ class _CreateBlogState extends State<CreateBlog> {
     );
   }
 }
-
